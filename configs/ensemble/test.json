@@ -1,0 +1,19 @@
+[
+{
+  "model_name": "xgb",
+  "eta": 0.3,
+  "lambda": 0.3,
+  "max_depth": 3,
+  "subsample": 0.9
+},
+{
+  "model_name": "wrn",
+  "batch_size": 128,
+  "depth": 2,
+  "dropRate": 0.0,
+  "lr": 0.001,
+  "max_epochs": 10,
+  "widen_factor": 4,
+  "model_file": "wrn_1691078145.pkl"
+}
+]

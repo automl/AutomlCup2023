@@ -1,0 +1,63 @@
+title: "AutoMLCup Phase 1"
+version: 2
+description: AutoML Cup Phase 1
+image: logo.png
+registration_auto_approve: True # do not require approval from organizers to join
+docker_image: automlcup2023/automlcup:latest # the Docker image in which submissions are run
+enable_detailed_results: True
+queue: 3ddd375a-c2bc-4599-a8a2-74c9ea85d0f3
+
+# Documentation web pages
+terms: pages/terms.md
+pages:
+  - title: Overview
+    file: pages/overview.md
+  - title: Data
+    file: pages/data.md
+  - title: Evaluation
+    file: pages/evaluation.md
+
+# Definition of the tasks
+tasks:
+  - index: 0
+    name: Splice
+    description: Splice-junction Gene Sequences
+    is_public: false
+    input_data: data/input_data/splice/
+    reference_data: data/input_data/splice/
+    scoring_program: scoring_program
+    ingestion_program: ingestion_program
+  - index: 1
+    name: ListOps
+    description: ListOps
+    is_public: false
+    input_data: data/input_data/listops/
+    reference_data: data/input_data/listops/
+    scoring_program: scoring_program
+    ingestion_program: ingestion_program
+
+phases:
+  - index: 0
+    name: Phase 1
+    description: "Diverse 1D tasks"
+    start: 6-6-2023
+    end: 7-10-2023
+    tasks:
+      - 0
+      - 1
+
+# Leaderboard
+leaderboards:
+  - index: 0
+    title: Results
+    key: Results
+    submission_rule: "Add_And_Delete"
+    columns:
+      - title: Accuracy
+        key: accuracy
+        index: 0
+        sorting: asc
+      - title: Duration
+        key: duration
+        index: 1
+        sorting: desc

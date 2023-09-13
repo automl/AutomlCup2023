@@ -1,0 +1,72 @@
+title: "AutoMLCup Phase 2"
+version: 2
+description: AutoML Cup Phase 2
+image: logo.png
+registration_auto_approve: True # do not require approval from organizers to join
+docker_image: automlcup2023/automlcup:latest # the Docker image in which submissions are run
+enable_detailed_results: True
+queue: 3ddd375a-c2bc-4599-a8a2-74c9ea85d0f3
+
+# Documentation web pages
+terms: pages/terms.md
+pages:
+  - title: Overview
+    file: pages/overview.md
+  - title: Data
+    file: pages/data.md
+  - title: Evaluation
+    file: pages/evaluation.md
+
+# Definition of the tasks
+tasks:
+  - index: 0
+    name: Lego
+    description: A 1D synthetic reasoning task
+    is_public: false
+    input_data: data/lego/
+    reference_data: data/lego/
+    scoring_program: scoring_program
+    ingestion_program: ingestion_program
+  - index: 1
+    name: Protein
+    description: A 2D Protein Folding task
+    is_public: false
+    input_data: data/protein/
+    reference_data: data/protein/
+    scoring_program: scoring_program
+    ingestion_program: ingestion_program
+  - index: 2
+    name: Splice
+    description: Splice-junction Gene Sequences
+    is_public: false
+    input_data: data/splice/
+    reference_data: data/splice/
+    scoring_program: scoring_program
+    ingestion_program: ingestion_program
+
+phases:
+  - index: 0
+    name: Phase 2
+    description: "Diverse 2D tasks"
+    start: 7-15-2023
+    end: 8-10-2023
+    tasks:
+      - 0
+      - 1
+      - 2
+
+# Leaderboard
+leaderboards:
+  - index: 0
+    title: Results
+    key: Results
+    submission_rule: "Add_And_Delete"
+    columns:
+      - title: Error
+        key: error
+        index: 0
+        sorting: desc
+      - title: Duration
+        key: duration
+        index: 1
+        sorting: asc

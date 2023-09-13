@@ -1,0 +1,14 @@
+{
+  "batch_size": 128,
+  "depth": 1,
+  "dropRate": 0.12271028883683034,
+  "max_epochs": 74,
+  "max_lr": 0.005658315616570073,
+  "min_lr": 4.425423453394412e-05,
+  "model_name": "wrn",
+  "optimizer": "AdamW",
+  "period": 14,
+  "use_early_stopping": "False",
+  "weight_decay": 0.0009197724347149268,
+  "widen_factor": 4
+}

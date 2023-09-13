@@ -1,0 +1,13 @@
+{
+    "name": "pde",
+    "input_dimension": 2,
+    "num_examples": 630,
+    "max_sequence_len": 14,
+    "channels": 2,
+    "width": 128,
+    "height": 128,
+    "output_shape": [2, 128, 128],
+    "output_type": "regression",
+    "evaluation_metric": "rmse",
+    "training_limit_sec": 36000
+}

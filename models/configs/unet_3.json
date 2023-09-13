@@ -1,0 +1,10 @@
+{
+  "lr": 0.001,
+  "lr_scheduler": false,
+  "max_epochs": 300,
+  "model_name": "unet",
+  "optimizer": "Adam",
+  "pretrained": true,
+  "starting_batch_size": 512,
+  "use_ssl": false
+}

@@ -1,0 +1,12 @@
+{
+  "batch_size": 88,
+  "d_model": 94,
+  "dropout": 0.05936385947712203,
+  "kernel_size": 7,
+  "lr": 0.00473990966765613,
+  "max_epochs": 23,
+  "model_name": "multires",
+  "n_layers": 5,
+  "optimizer": "AdamW",
+  "weight_decay": 0.0008588587257036416
+}

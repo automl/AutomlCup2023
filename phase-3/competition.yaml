@@ -1,0 +1,72 @@
+title: "AutoMLCup Phase 3"
+version: 2
+description: AutoML Cup Phase 3
+image: logo.png
+registration_auto_approve: True # do not require approval from organizers to join
+docker_image: automlcup2023/automlcup:latest # the Docker image in which submissions are run
+enable_detailed_results: True
+queue: 6c020781-745e-4df2-ba77-79f7ec441d3b
+
+# Documentation web pages
+terms: pages/terms.md
+pages:
+  - title: Overview
+    file: pages/overview.md
+  - title: Data
+    file: pages/data.md
+  - title: Evaluation
+    file: pages/evaluation.md
+
+# Definition of the tasks
+tasks:
+  - index: 0
+    name: CAMELYON17
+    description: CAMELYON17
+    is_public: false
+    input_data: data/camelyon17/
+    reference_data: data/camelyon17/
+    scoring_program: scoring_program
+    ingestion_program: ingestion_program
+  - index: 1
+    name: Global WHEAT
+    description: Global WHEAT
+    is_public: false
+    input_data: data/globalwheat/
+    reference_data: data/globalwheat/
+    scoring_program: scoring_program
+    ingestion_program: ingestion_program
+  - index: 2
+    name: PDE
+    description: PDE
+    is_public: false
+    input_data: data/pde/
+    reference_data: data/pde/
+    scoring_program: scoring_program
+    ingestion_program: ingestion_program
+
+phases:
+  - index: 0
+    name: Phase 3
+    description: "Diverse 2D tasks"
+    start: 8-05-2023
+    end: 9-01-2023
+    tasks:
+      - 0
+      - 1
+      - 2
+
+# Leaderboard
+leaderboards:
+  - index: 0
+    title: Results
+    key: Results
+    submission_rule: "Add_And_Delete"
+    columns:
+      - title: Error
+        key: error
+        index: 0
+        sorting: desc
+      - title: Duration
+        key: duration
+        index: 1
+        sorting: asc

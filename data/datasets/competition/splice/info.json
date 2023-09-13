@@ -1,0 +1,13 @@
+{
+    "name": "splice",
+    "input_dimension": 1,
+    "num_examples": 2871,
+    "max_sequence_len": 60,
+    "channels": 8,
+    "width": 1,
+    "height": 1,
+    "output_shape": [3],
+    "output_type": "classification",
+    "evaluation_metric": "accuracy",
+    "training_limit_sec": 18000
+}

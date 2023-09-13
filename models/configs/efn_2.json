@@ -1,0 +1,16 @@
+{
+  "activation_ff": "silu",
+  "augmentation": "TrivialAugment",
+  "dropout": 0.400668490678072,
+  "lr": 0.0008897449032713525,
+  "lr_scheduler": true,
+  "max_epochs": 168,
+  "model_name": "efn",
+  "multi_dropout": false,
+  "num_layers": 4,
+  "optimizer": "AdamW",
+  "pretrained": true,
+  "starting_batch_size": 256,
+  "weight_decay": 0.007164967997162693,
+  "use_ssl": false
+}

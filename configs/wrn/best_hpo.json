@@ -1,0 +1,9 @@
+{
+  "batch_size": 256,
+  "depth": 1,
+  "dropRate": 0.2867514687823369,
+  "lr": 0.000886911531179228,
+  "model_name": "wrn",
+  "widen_factor": 4,
+  "max_epochs": 64
+}

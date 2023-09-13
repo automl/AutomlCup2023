@@ -1,0 +1,13 @@
+{
+    "name": "globalwheat",
+    "input_dimension": 2,
+    "num_examples": 388,
+    "max_sequence_len": 1,
+    "channels": 3,
+    "width": 1024,
+    "height": 1024,
+    "output_shape": [1],
+    "output_type": "regression",
+    "evaluation_metric": "mse",
+    "training_limit_sec": 36000
+}

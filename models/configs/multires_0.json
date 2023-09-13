@@ -1,0 +1,13 @@
+{
+  "d_model": 64,
+  "dropout": 0.1,
+  "kernel_size": 4,
+  "lr": 0.003,
+  "lr_scheduler": true,
+  "max_epochs": 200,
+  "model_name": "multires",
+  "n_layers": 4,
+  "optimizer": "AdamW",
+  "starting_batch_size": 512,
+  "weight_decay": 0.03
+}

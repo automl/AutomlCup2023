@@ -1,0 +1,13 @@
+{
+    "name": "camelyon17",
+    "input_dimension": 2,
+    "num_examples": 12812,
+    "max_sequence_len": 1,
+    "channels": 3,
+    "width": 96,
+    "height": 96,
+    "output_shape": [1],
+    "output_type": "classification",
+    "evaluation_metric": "f1",
+    "training_limit_sec": 36000
+}

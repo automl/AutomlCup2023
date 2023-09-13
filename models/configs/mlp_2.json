@@ -1,0 +1,8 @@
+{
+    "model_name":"mlp",
+    "n_layers": 2,
+    "d_model": 4096,
+    "lr": 0.001,
+    "lr_scheduler": false,
+    "max_epochs": 10
+}

@@ -1,0 +1,13 @@
+{
+    "name": "protein",
+    "input_dimension": 2,
+    "num_examples": 335,
+    "max_sequence_len": 1,
+    "channels": 57,
+    "width": 128,
+    "height": 128,
+    "output_shape": [128, 128],
+    "output_type": "regression",
+    "evaluation_metric": "mae",
+    "training_limit_sec": 36000
+}
