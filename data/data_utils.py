@@ -5,7 +5,7 @@ from pathlib import Path
 def get_dataset(suite, dataset_id, root=None):
     suite = suite.lower()
     if root is None:
-        root = '/work/dlclarge2/hogj-automlcup/AutoMLCup/data/datasets/'
+        root = 'data/datasets/'
     metadata = None
     if suite == 'openml-cc18':
         from data.data_loaders import load_openml

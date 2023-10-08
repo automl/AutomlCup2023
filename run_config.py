@@ -122,8 +122,6 @@ def get_formatted_dataset(suite, dataset_id, dataset_dir, fold=0, cv=1):
     X_train, X_unlabeled = X_train[labeled_datapoints], X_train[~labeled_datapoints]
     y_train, y_unlabeled = y_train[labeled_datapoints], y_train[~labeled_datapoints]
 
-    labeled_datapoints = ~np.isnan(y_test).any(axis=tuple(range(1, y_train.ndim)))
-    X_test,
     print("Loaded Dataset")
 
     X_train, X_val, y_train, y_val = split_dataset(X_train, y_train, metadata)
