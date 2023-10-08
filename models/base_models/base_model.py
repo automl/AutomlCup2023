@@ -8,6 +8,7 @@ import torch
 from ConfigSpace import EqualsCondition, UniformIntegerHyperparameter, UniformFloatHyperparameter, \
     CategoricalHyperparameter
 from ConfigSpace.configuration_space import ConfigurationSpace
+from sklearn.neighbors import KNeighborsRegressor
 from torch.utils.data import Dataset
 from torchvision.transforms import TrivialAugmentWide, RandAugment
 
@@ -109,19 +110,43 @@ class BaseModel(ABC):
                 break
             if (not self.cfg['use_ssl']) \
                     or (X_unlabeled is None or len(X_unlabeled) == 0) \
-                    or (not self.is_classification) \
                     or i < self.cfg['fixmatch_warmup']:
                 continue
-            # https://github.com/skorch-dev/skorch/issues/805
-            prob_distributions = self.predict_proba(X_unlabeled)
-            labels = np.argmax(prob_distributions, axis=1)
-            highest_prob = np.squeeze(np.max(prob_distributions, axis=1), axis=1)
-            newly_labeled = highest_prob > self.cfg['fixmatch_threshold']
-            if self.is_multi_label or not self.is_classification:
-                labels = labels.astype("float32")
-            X_unlabeled, X_newly_labeled = X_unlabeled[~newly_labeled], X_unlabeled[newly_labeled]
-            X = np.concatenate((X, X_newly_labeled))
-            y = np.concatenate((y, labels[newly_labeled]))
+            elif self.is_classification:
+                # SSL for classification
+                # https://github.com/skorch-dev/skorch/issues/805
+                prob_distributions = self.predict_proba(X_unlabeled)
+                labels = np.argmax(prob_distributions, axis=1)
+                highest_prob = np.squeeze(np.max(prob_distributions, axis=1), axis=1)
+                newly_labeled = highest_prob > self.cfg['fixmatch_threshold_classification']
+                if self.is_multi_label or not self.is_classification:
+                    labels = labels.astype("float32")
+                X_unlabeled, X_newly_labeled = X_unlabeled[~newly_labeled], X_unlabeled[newly_labeled]
+                X = np.concatenate((X, X_newly_labeled))
+                y = np.concatenate((y, labels[newly_labeled]))
+            elif hasattr(self.model.module_, 'embedding'):
+                n_neighbors = self.cfg['n_neighbors']
+                self.model.module_.embedding = True
+                embedding_labeled = np.array(self.model.forward(X))
+                embedding_unlabeled = np.array(self.model.forward(X_unlabeled))
+                self.model.module_.embedding = False
+                knn = KNeighborsRegressor(n_neighbors=n_neighbors).fit(embedding_labeled, y)
+                neighbors_indices = []
+                step_size = 10
+                for step in range(0, len(embedding_unlabeled), step_size):
+                    slice = embedding_unlabeled[step:step + step_size]
+                    if len(slice.shape) == 1:
+                        slice = slice.reshape(1, -1)
+                    neighbors_indices.append(knn.kneighbors(slice, return_distance=False))
+                neighbors_indices = np.concatenate(neighbors_indices, axis=0)
+                prediction_neighbors = y[neighbors_indices]
+                labels = np.mean(prediction_neighbors, axis=1)
+                newly_labeled = (
+                            np.std(prediction_neighbors, axis=1) < self.cfg['fixmatch_threshold_regression']).flatten()
+                X_unlabeled, X_newly_labeled = X_unlabeled[~newly_labeled], X_unlabeled[newly_labeled]
+                X = np.concatenate((X, X_newly_labeled))
+                y = np.concatenate((y, labels[newly_labeled]))
+
         end = timer()
         self.run_statistics['runtime'] = end - start
         print("Stopped Training", self.__class__.__name__, f"took {self.run_statistics['runtime']:.1f}")
@@ -141,14 +166,20 @@ class BaseModel(ABC):
         fixmatch_warmup = UniformIntegerHyperparameter(
             name="fixmatch_warmup", lower=0, upper=50, default_value=30, log=False
         )
-        fixmatch_threshold = UniformFloatHyperparameter(
-            name="fixmatch_threshold", lower=0.6, upper=0.975, default_value=0.9, log=False
+        fixmatch_threshold_classification = UniformFloatHyperparameter(
+            name="fixmatch_threshold_classification", lower=0.6, upper=0.975, default_value=0.9, log=False
+        )
+        fixmatch_threshold_regression = UniformFloatHyperparameter(
+            name="fixmatch_threshold_regression", lower=0.01, upper=0.4, default_value=0.25, log=False
         )
         starting_batch_size = CategoricalHyperparameter(
             name="starting_batch_size", choices=[256, 512], default_value=512
         )
         use_ssl = CategoricalHyperparameter(
             name="use_ssl", choices=[True, False], default_value=False
+        )
+        n_neighbors = UniformIntegerHyperparameter(
+            name="n_neighbors", lower=3, upper=20, default_value=5, log=False
         )
         augmentation = CategoricalHyperparameter(
             name="augmentation", choices=['RandAugment', 'TrivialAugment', 'None'], default_value='None'
@@ -159,12 +190,15 @@ class BaseModel(ABC):
         num_ops = UniformIntegerHyperparameter(
             name="num_ops", lower=1, upper=5, default_value=2, log=False
         )
-        cs.add_hyperparameters([fixmatch_threshold, fixmatch_warmup, starting_batch_size, use_ssl, magnitude,
-                                augmentation, num_ops])
+        cs.add_hyperparameters(
+            [fixmatch_threshold_regression, fixmatch_threshold_classification, fixmatch_warmup, starting_batch_size,
+             use_ssl, magnitude, augmentation, n_neighbors, num_ops])
         cs.add_conditions([EqualsCondition(magnitude, augmentation, 'RandAugment'),
                            EqualsCondition(num_ops, augmentation, 'RandAugment'),
                            EqualsCondition(fixmatch_warmup, use_ssl, True),
-                           EqualsCondition(fixmatch_threshold, use_ssl, True)])
+                           EqualsCondition(fixmatch_threshold_regression, use_ssl, True),
+                           EqualsCondition(fixmatch_threshold_classification, use_ssl, True),
+                           EqualsCondition(n_neighbors, use_ssl, True)])
         return cs
 
     @classmethod

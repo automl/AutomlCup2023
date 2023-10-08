@@ -39,7 +39,9 @@ class EFN(nn.Module):
                 if multi_dropout:
                     last_layers.append(nn.Dropout(dropout))
 
-        self.net.classifier[1] = nn.Sequential(*last_layers)
+        self.net.classifier[1] = nn.Identity()
+        self.last_layers = nn.Sequential(*last_layers)
+        self.embedding = False
         if not (timeseries * channel == 1 or timeseries * channel == 3):
             self.net.features[0][0] = nn.Conv2d(timeseries * channel, 32, kernel_size=(3, 3), stride=(2, 2),
                                                 padding=(1, 1), bias=False)
@@ -50,6 +52,10 @@ class EFN(nn.Module):
             x = x.repeat(1, 1, 3, 1, 1)
         x = x.reshape((x.shape[0], -1, x.shape[3], x.shape[4]))
         x = self.net.forward(x)
+        if not self.embedding:
+            x = self.last_layers(x)
+        # else:
+        #     x = self.last_layers[-1](x)
         return x
 
     def disable_gradients(self, model) -> None:
