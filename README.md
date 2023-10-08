@@ -53,6 +53,15 @@ You need a python installation of version 3.10
 python -m pip install -r models/requirements.txt
 ```
 
+### Singularity
+To create a singularity container from the definition file execute:
+```sh
+sudo singularity build singularity.sif singularity.def
+```
+When executing a python command with singularity add the following to the python command
+```sh
+singularity exec --nv -H <path_to_repository> singularity.sif python file.py
+```
 ### Run single model
 
 To run a single model on a given dataset you can execute:

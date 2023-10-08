@@ -1,0 +1,7 @@
+Bootstrap: docker
+From: python:3.10.13-bookworm
+%files
+    models/requirements.txt requirements.txt
+%post
+    pip3 install -r requirements.txt
+
