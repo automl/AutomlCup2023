@@ -27,7 +27,7 @@ pytz==2023.3
 PyYAML==6.0
 requests==2.31.0
 responses==0.18.0
-scikit-learn==1.2.2
+scikit-learn==1.3.0
 scipy==1.10.1
 six==1.16.0
 sympy==1.12
@@ -35,6 +35,7 @@ threadpoolctl==3.1.0
 torch==1.13.1 # 2.0.1 original without autogluon.tabular[fastai]
 torchdata==0.5.1 # 0.6.1 original without autogluon.tabular[fastai]
 torchtext==0.14.1 # original 0.15.2 without autogluon.tabular[fastai]
+torchvision==0.14.1
 tqdm==4.65.0
 typing_extensions==4.6.2
 tzdata==2023.3
