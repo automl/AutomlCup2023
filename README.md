@@ -19,8 +19,8 @@ versions of each model, the one after the epoch with the lowest validation loss 
 ensemble. For each model we run a portfolio of diverse hyperparameter configurations to cover the needs of different
 tasks. The list of models we use consists of MultiRes, UNet, EfficientNet and others thus covering a wide variety of
 potential tasks and architecture types. The pretrained [UNet](https://github.com/milesial/Pytorch-UNet) is a widely
-used python implementation of a unet that was
-trained on a car segmentation task. We warmstart our training with the weights of that segmentation task and replace the
+used Python implementation of a UNet that was trained on a car segmentation task.
+We warmstart our training with the weights of that segmentation task and replace the
 first/last layer of the UNet if necessary. This allows us to generalize and be applicable to any other task that has a
 2D output where the width and height of the output are the same as the input. The pretrained EfficientNet and Vision
 Transformer and their weights are part of torchvision. We again warmstart our training with these weights and replace
@@ -31,14 +31,14 @@ open-source pretrained model weights to develop a robust and widely applicable e
 ## Datasets
 
 We have copied the starter kit code for each of the three phases of the competition and put them
-into `phase-1/`, `phase-2/` and `phase-3/` respectively. Each of these folders have `README.md` files containing
+into `phase-1/`, `phase-2/` and `phase-3/` respectively. Each of these folders have a `README.md` file containing
 instructions on how to download the datasets of that phase. Please follow these instructions. Additionally, you need
 to put the datasets in the `data/datasets/competition/<dataset_name>/` folders. For phase 2 you have to additionally
 execute
 ```sh
 python data/create_phase-2_splits.py --dataset <dataset name>
 ```
-to split the datasets into training and validation set.
+to split the datasets into training and validation sets.
 If you follow these instructions you would have two copies of all the datasets. You might want to avoid this by saving
 the datasets first into the `data/datasets/competition/<dataset_name>/` folders and then creating symlinks to the data
 folders in each phase.
@@ -47,7 +47,7 @@ folders in each phase.
 
 ### Requirements
 
-You need a python installation of version 3.10
+You need a Python installation of version 3.10
 
 ```sh
 python -m pip install -r models/requirements.txt
@@ -58,7 +58,7 @@ To create a singularity container from the definition file execute:
 ```sh
 sudo singularity build singularity.sif singularity.def
 ```
-When executing a python command with singularity add the following to the python command
+When executing a Python command with singularity add the following to the Python command
 ```sh
 singularity exec --nv -H <path_to_repository> singularity.sif python file.py
 ```
@@ -82,10 +82,10 @@ You can execute the HPO code with:
 python run_hpo.py --model <MODEL> --suite <phase-\d> --dataset_id <dataset id> --time_budget <total run time> --n_trials <number of trials>
 ```
 
-There are also optional arguments which allow you to use cross validation instead of the holdout default by specifying a
+There are also optional arguments which allow you to use cross-validation instead of the holdout default by specifying a
 number of folds via the `--cv` parameter.
-Additionally it is also possible to use multifidelity on the number of datapoints with the `--multifidelity` flag.
-For small datasets like splice we make use of 5-fold cross validation while we applied multifidelity to slow datasets
+Additionally, it is also possible to use multi-fidelity on the number of datapoints with the `--multifidelity` flag.
+For small datasets like splice we make use of 5-fold cross-validation while we applied multi-fidelity to slow datasets
 like lego.
 
 ### Run submission
@@ -98,8 +98,7 @@ datasets in phase 1 using the code in `models/` as a submission.
 
 Use `./zip.sh` to create the submissions for codabench.
 It will create `phase1.zip` and `phase2.zip`, since our approach for phase 2 and phase 3 uses the exact same code you
-can
-use `phase2.zip` as a submission for both phase 2 and phase 3.
+can use `phase2.zip` as a submission for both phase 2 and phase 3.
 
 The final submissions on codabench did not use the newest version of our code found in `models/`. The code of these
-submission is zipped and in the `offical_submisisons/` folder.
+submission is zipped and in the `official_submissions/` folder.
